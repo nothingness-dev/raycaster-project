@@ -69,12 +69,12 @@ void UpdatePlayer(Player *player, float deltaTime) {
         moveDir.y -= player->direction.y;
     }
     if (IsKeyDown(KEY_A)) {
-        moveDir.x -= player->direction.y;
-        moveDir.y += player->direction.x;
-    }
-    if (IsKeyDown(KEY_D)) {
         moveDir.x += player->direction.y;
         moveDir.y -= player->direction.x;
+    }
+    if (IsKeyDown(KEY_D)) {
+        moveDir.x -= player->direction.y;
+        moveDir.y += player->direction.x;
     }
     
     if (moveDir.x != 0 || moveDir.y != 0) {
