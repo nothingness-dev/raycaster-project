@@ -28,6 +28,7 @@ void DrawSimpleMap(void) {
         {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
     };
     
+
     for (int y = 0; y < MAP_HEIGHT; y++) {
         for (int x = 0; x < MAP_WIDTH; x++) {
             if (map[y][x] == 1) {
