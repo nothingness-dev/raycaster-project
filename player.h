@@ -3,7 +3,6 @@
 
 #include "raylib.h"
 
-
 typedef struct {
     Vector2 position;      
     Vector2 direction;     
@@ -14,9 +13,9 @@ typedef struct {
     Color color;         
 } Player;
 
-
 void InitPlayer(Player *player);                    
 void UpdatePlayer(Player *player, float deltaTime); 
 void DrawPlayer2D(Player *player);                  
+int IsWall(int x, int y);
 
 #endif
