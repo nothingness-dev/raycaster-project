@@ -12,4 +12,4 @@ all:
 clean:
 	del $(TARGET)
 # gcc main.c map.c player.c raycaster.c -o app.exe -IC:\raylib\include -LC:\raylib\lib -lraylib -lopengl32 -lgdi32 -lwinmm -lm
-# use mingw32-make to run this makefile on windows
+# use mingw32-make to run makefile on windows
