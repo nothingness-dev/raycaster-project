@@ -1,12 +1,14 @@
 #include "raylib.h"
 #include "player.h"
 #include "raycaster.h"
+#include "map.h"
+#include <stdio.h>
 
 int main() {
-    const int screenWidth = 800;
+    const int screenWidth = 600;
     const int screenHeight = 600;
     
-    InitWindow(screenWidth, screenHeight, "Raycasting Engine - 3D + Minimap");
+    InitWindow(screenWidth, screenHeight, "Raycasting Engine - 3D + Minimap + Editor");
     SetTargetFPS(60);
     
     Player player;
@@ -15,22 +17,63 @@ int main() {
     while (!WindowShouldClose()) {
         float deltaTime = GetFrameTime();
         
-
-        UpdatePlayer(&player, deltaTime);
+        if (IsKeyPressed(KEY_M)) {
+            GameMode current = GetCurrentMode();
+            SetCurrentMode((current == MODE_PLAY) ? MODE_EDIT : MODE_PLAY);
+        }
+        
+        if (IsKeyPressed(KEY_H)) {
+            ToggleShowMinimap();
+        }
+        
+        if (IsKeyPressed(KEY_F5)) {
+            FILE *file = fopen("map.bin", "wb");
+            if (file) {
+                extern int worldMap[20][20];
+                fwrite(worldMap, sizeof(int), 20*20, file);
+                fclose(file);
+                TraceLog(LOG_INFO, "Map saved to map.bin");
+            }
+        }
+        
+        if (IsKeyPressed(KEY_L)) {
+            FILE *file = fopen("map.bin", "rb");
+            if (file) {
+                extern int worldMap[20][20];
+                size_t read = fread(worldMap, sizeof(int), 20*20, file);
+                fclose(file);
+                if (read == 20*20) {
+                    TraceLog(LOG_INFO, "Map loaded from map.bin");
+                }
+            }
+        }
+        
+        if (GetCurrentMode() == MODE_PLAY) {
+            UpdatePlayer(&player, deltaTime);
+        } else {
+            HandleMapEditor(&player);
+        }
         
         BeginDrawing();
         ClearBackground(BLACK);
         
-
-        Render3DView(&player);
+        if (GetCurrentMode() == MODE_PLAY) {
+            Render3DView(&player);
+            
+            if (GetShowMinimap()) {
+                RenderMinimap(&player);
+            }
+        } else {
+            DrawSimpleMap();
+            DrawPlayer2D(&player);
+            
+            DrawMapGrid(); 
+            
+            DrawMousePositionInfo();
+        }
         
-
-        RenderMinimap(&player);
-        
-
+        DrawGameStateInfo();
         DrawFPS(10, 10);
-        DrawText("3D View + Minimap", 10, 40, 20, YELLOW);
-        DrawText("WASD: Move | Arrows: Rotate", 10, 70, 18, WHITE);
         
         EndDrawing();
     }
