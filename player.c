@@ -5,37 +5,13 @@
 #define MAP_WIDTH 20
 #define MAP_HEIGHT 20
 
-
-static int collisionMap[MAP_HEIGHT][MAP_WIDTH] = {
-    {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,1,1,0,0,1,1,1,1,1,1,0,0,1,1,0,0,1},
-    {1,0,0,1,1,0,0,1,0,0,0,0,1,0,0,1,1,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,1,1,0,0,1,0,0,0,0,1,0,0,1,1,0,0,1},
-    {1,0,0,1,1,0,0,1,1,1,1,1,1,0,0,1,1,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,1,1,0,0,1,1,1,1,1,1,0,0,1,1,0,0,1},
-    {1,0,0,1,1,0,0,1,0,0,0,0,1,0,0,1,1,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,1,1,0,0,1,0,0,0,0,1,0,0,1,1,0,0,1},
-    {1,0,0,1,1,0,0,1,1,1,1,1,1,0,0,1,1,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-    {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-};
-
+extern int worldMap[MAP_HEIGHT][MAP_WIDTH];
 
 int IsWall(int x, int y) {
     if (x < 0 || x >= MAP_WIDTH || y < 0 || y >= MAP_HEIGHT)
         return 1;
-    return collisionMap[y][x] == 1;
+    return worldMap[y][x] == 1;
 }
-
 
 void InitPlayer(Player *player) {
     player->position = (Vector2){TILE_SIZE * 2.5f, TILE_SIZE * 2.5f};
@@ -47,7 +23,6 @@ void InitPlayer(Player *player) {
     player->color = RED;
 }
 
-
 void NormalizeVector(Vector2 *vec) {
     float length = sqrtf(vec->x * vec->x + vec->y * vec->y);
     if (length > 0) {
@@ -55,7 +30,6 @@ void NormalizeVector(Vector2 *vec) {
         vec->y /= length;
     }
 }
-
 
 void UpdatePlayer(Player *player, float deltaTime) {
     Vector2 moveDir = {0.0f, 0.0f};
@@ -131,7 +105,6 @@ void UpdatePlayer(Player *player, float deltaTime) {
         NormalizeVector(&player->direction);
     }
 }
-
 
 void DrawPlayer2D(Player *player) {
     DrawCircleV(player->position, player->radius, player->color);
