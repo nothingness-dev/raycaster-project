@@ -18,8 +18,18 @@ extern int worldMap[20][20];
 void Render3DView(Player *player) {
     int screenWidth = GetScreenWidth();
     int screenHeight = GetScreenHeight();
+    ClearBackground((Color){135, 206, 235, 255});
+    for (int y = screenHeight / 2; y < screenHeight; y++) {
+        float ratio = (float)(y - screenHeight / 2) / (screenHeight / 2);
+        Color floorColor = {
+            (unsigned char)(60 * (1 - ratio * 0.5)),
+            (unsigned char)(60 * (1 - ratio * 0.5)),
+            (unsigned char)(60 * (1 - ratio * 0.5)),
+            255
+        };
+        DrawLine(0, y, screenWidth, y, floorColor);
+    }
     
-
     for (int x = 0; x < screenWidth; x++) {
         float cameraX = 2 * x / (float)screenWidth - 1;
         
@@ -100,9 +110,6 @@ void Render3DView(Player *player) {
         };
         
         DrawLine(x, drawStart, x, drawEnd, shadedColor);
-        
-        DrawLine(x, drawEnd, x, screenHeight, (Color){60,60,60,255});
-        DrawLine(x, 0, x, drawStart, (Color){40,40,80,255});
     }
 }
 
