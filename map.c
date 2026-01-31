@@ -48,6 +48,17 @@ void DrawSimpleMap(void) {
                              TILE_SIZE, TILE_SIZE, WHITE);
         }
     }
+    
+    for (int y = 0; y < 5; y++) {
+        for (int x = 0; x < MAP_WIDTH; x++) {
+            if (worldMap[y][x] == 0) {
+                DrawRectangle(x * TILE_SIZE, y * TILE_SIZE, 
+                            TILE_SIZE, TILE_SIZE, SKYBLUE);
+                DrawRectangleLines(x * TILE_SIZE, y * TILE_SIZE, 
+                                 TILE_SIZE, TILE_SIZE, WHITE);
+            }
+        }
+    }
 }
 
 void DrawMapGrid(void) {  
@@ -77,11 +88,6 @@ void HandleMapEditor(Player *player) {
         
         if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) {
             worldMap[mapY][mapX] = 0; 
-        }
-        
-        if (IsMouseButtonPressed(MOUSE_BUTTON_MIDDLE)) {
-            player->position.x = (mapX + 0.5f) * TILE_SIZE;
-            player->position.y = (mapY + 0.5f) * TILE_SIZE;
         }
     }
 }
