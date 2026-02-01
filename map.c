@@ -48,17 +48,6 @@ void DrawSimpleMap(void) {
                              TILE_SIZE, TILE_SIZE, WHITE);
         }
     }
-    
-    for (int y = 0; y < 5; y++) {
-        for (int x = 0; x < MAP_WIDTH; x++) {
-            if (worldMap[y][x] == 0) {
-                DrawRectangle(x * TILE_SIZE, y * TILE_SIZE, 
-                            TILE_SIZE, TILE_SIZE, SKYBLUE);
-                DrawRectangleLines(x * TILE_SIZE, y * TILE_SIZE, 
-                                 TILE_SIZE, TILE_SIZE, WHITE);
-            }
-        }
-    }
 }
 
 void DrawMapGrid(void) {  
@@ -98,24 +87,53 @@ void DrawMousePositionInfo() {
     int mapY = (int)(mousePos.y / TILE_SIZE);
     
     char infoText[64];
-    sprintf(infoText, "Mouse: (%d, %d) | Map: [%d, %d]", 
-            (int)mousePos.x, (int)mousePos.y, mapX, mapY);
+    
+    if (mapX >= 0 && mapX < MAP_WIDTH && mapY >= 0 && mapY < MAP_HEIGHT) {
+        sprintf(infoText, "Mouse: (%d, %d) | Map: [%d, %d] ID: %d", 
+                (int)mousePos.x, (int)mousePos.y, mapX, mapY, worldMap[mapY][mapX]);
+    } else {
+        sprintf(infoText, "Mouse: (%d, %d) | Out of map", 
+                (int)mousePos.x, (int)mousePos.y);
+    }
     
     DrawText(infoText, 10, 40, 20, YELLOW);
 }
 
 void DrawGameStateInfo(void) {
     const char *modeText = (currentMode == MODE_PLAY) ? 
-                          "PLAY MODE (M to toggle)" : 
-                          "EDIT MODE (M to toggle)";
+                          "PLAY MODE (M to switch)" : 
+                          "EDIT MODE (M to switch)";
     
-    DrawText(modeText, 10, 70, 20, 
-             (currentMode == MODE_PLAY) ? GREEN : ORANGE);
+    Color modeColor = (currentMode == MODE_PLAY) ? GREEN : ORANGE;
     
-
+    DrawText(modeText, 10, 70, 20, modeColor);
+    
+    const char *minimapText = (showMinimap) ? 
+                             "Minimap: ON (H to hide)" : 
+                             "Minimap: OFF (H to show)";
+    DrawText(minimapText, 10, 100, 20, (showMinimap) ? GREEN : RED);
 }
 
-GameMode GetCurrentMode(void) { return currentMode; }
-void SetCurrentMode(GameMode mode) { currentMode = mode; }
-int GetShowMinimap(void) { return showMinimap; }
-void ToggleShowMinimap(void) { showMinimap = !showMinimap; }
+GameMode GetCurrentMode(void) { 
+    return currentMode; 
+}
+
+void SetCurrentMode(GameMode mode) { 
+    currentMode = mode; 
+}
+
+int GetShowMinimap(void) { 
+    return showMinimap; 
+}
+
+void ToggleShowMinimap(void) { 
+    showMinimap = !showMinimap; 
+}
+
+int GetShowGrid(void) {
+    return showGrid;
+}
+
+void ToggleShowGrid(void) {
+    showGrid = !showGrid;
+}
